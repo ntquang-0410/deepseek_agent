@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+azure-ai-inference
+azure-core
+pydantic
