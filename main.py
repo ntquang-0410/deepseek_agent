@@ -20,8 +20,8 @@ async def ask_question(req: AskRequest):
     keywords_r1 = ["thuật toán", "giải bài", "toán", "giải thích", "code"]
     is_complex = any(kw in req.question.lower() for kw in keywords_r1)
     
-    # Sử dụng chung một model ổn định nhất cho mọi loại câu hỏi
-    model_name = "llama-3.1-8b-instant"
+    # Sử dụng các model đang khả dụng trên tài khoản Groq của bạn
+    model_name = "openai/gpt-oss-120b" if is_complex else "openai/gpt-oss-20b"
     
     try:
         response = await client.chat.completions.create(
