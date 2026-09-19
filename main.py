@@ -5,10 +5,10 @@ from openai import AsyncOpenAI
 
 app = FastAPI()
 
-# Khởi tạo client kết nối với OpenRouter
+# Khởi tạo client kết nối với Groq API
 client = AsyncOpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=os.getenv("OPENROUTER_API_KEY", "Chưa_có_API_Key")
+    base_url="https://api.groq.com/openai/v1",
+    api_key=os.getenv("GROQ_API_KEY", "Chưa_có_API_Key")
 )
 
 class AskRequest(BaseModel):
@@ -16,12 +16,12 @@ class AskRequest(BaseModel):
 
 @app.post("/api/ask")
 async def ask_question(req: AskRequest):
-    # Router đơn giản: Dùng DeepSeek-R1 cho bài tập/thuật toán phức tạp, V3 cho giao tiếp cơ bản
+    # Router phân loại câu hỏi
     keywords_r1 = ["thuật toán", "giải bài", "toán", "giải thích", "code"]
     is_complex = any(kw in req.question.lower() for kw in keywords_r1)
     
-    # OpenRouter cung cấp các endpoint :free cho DeepSeek
-    model_name = "deepseek/deepseek-r1:free" if is_complex else "deepseek/deepseek-chat:free"
+    # Sử dụng DeepSeek-R1 (Distill) cho bài khó, Llama 3.3 70B cho giao tiếp thường
+    model_name = "deepseek-r1-distill-llama-70b" if is_complex else "llama-3.3-70b-versatile"
     
     try:
         response = await client.chat.completions.create(
