@@ -20,8 +20,7 @@ async def ask_question(req: AskRequest):
     keywords_r1 = ["thuật toán", "giải bài", "toán", "giải thích", "code"]
     is_complex = any(kw in req.question.lower() for kw in keywords_r1)
     
-    # Sử dụng DeepSeek-R1 (Distill) cho bài khó, Llama 3.3 70B cho giao tiếp thường
-    model_name = "llama-3.3-70b-versatile" if is_complex else "llama-3.1-8b-instant"
+    model_name = "llama3-70b-8192" if is_complex else "llama3-8b-8192"
     
     try:
         response = await client.chat.completions.create(
