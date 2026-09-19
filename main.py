@@ -20,8 +20,8 @@ async def ask_question(req: AskRequest):
     keywords_r1 = ["thuật toán", "giải bài", "toán", "giải thích", "code"]
     is_complex = any(kw in req.question.lower() for kw in keywords_r1)
     
-    # Sử dụng Llama 3.1 thế hệ mới nhất, cực kỳ ổn định
-    model_name = "llama-3.1-70b-versatile" if is_complex else "llama-3.1-8b-instant"
+    # Sử dụng Mixtral cho các bài toán phức tạp và Llama 3.1 8B cho hội thoại
+    model_name = "mixtral-8x7b-32768" if is_complex else "llama-3.1-8b-instant"
     
     try:
         response = await client.chat.completions.create(
